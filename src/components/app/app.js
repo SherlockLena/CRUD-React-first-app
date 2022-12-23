@@ -11,9 +11,9 @@ class App extends Component {
         super(props);
         this.state = {
             data:  [
-                {name: 'John S.', salary: 800, increase: false, increase: false, rise: false, id: 1},
-                {name: 'Alex M.', salary: 1000, increase: true, increase: false, rise: false, id: 2},
-                {name: 'Jack C.', salary: 1200, increase: false, increase: false, rise: false, id: 3},
+                {name: 'John S.', salary: 800, increase: false, rise: false, id: 1},
+                {name: 'Alex M.', salary: 1000, increase: true, rise: false, id: 2},
+                {name: 'Jack C.', salary: 1200, increase: false, rise: false, id: 3},
             ],
             term: '',
             active: 'all'
@@ -35,7 +35,7 @@ class App extends Component {
             increase: false,
             rise: false,
             id: this.state.data.length + 1
-        }
+        };
         this.setState(({data}) => {
             const newArr = [...data, newItem];
             return {
@@ -52,7 +52,7 @@ class App extends Component {
                 }
                 return item;
             })
-        }))
+        }));
     }
 
     searchEmp = (items, term) => {
@@ -80,6 +80,17 @@ class App extends Component {
         this.setState({active: str});
     }
 
+    onChangeSalary = (id, salary) => {
+        this.setState(({data}) => ({
+            data: data.map(item => {
+                if(item.id === id) {
+                    return {...item, salary: salary};
+                }
+                return item;
+            })
+        }));
+    }
+
     render() {
         const {data, term, active} = this.state;
         const totalEmployees = data.length;
@@ -103,7 +114,8 @@ class App extends Component {
                 <EmployeesList 
                     data={filteredData}
                     onDelete={this.deleteItem}
-                    onToggleProp={this.onToggleProp}/>
+                    onToggleProp={this.onToggleProp}
+                    onChangeSalary={this.onChangeSalary}/>
                 <EmployeesAddForm onAdd={this.addItem}/>
             </div>
         );
